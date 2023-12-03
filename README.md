@@ -1,4 +1,4 @@
-README for Pose Estimation and Exercise Tracking Program
+## README for Pose Estimation and Exercise Tracking Program
 
 Description
 
@@ -44,12 +44,9 @@ Contributing
 
 Contributions to improve the program or add more features are welcome. Please ensure to follow coding standards and add comments for clarity.
 
-License
-
-[Specify License Here]
 
 Contact
-
-[Your Contact Information]
+Jesse Adjetey 
+Dela Nuworkpor
 
 Note: This README is for instructional and descriptive purposes. Actual functionality and performance might vary based on the implementation details and the environment in which the program is run.
