@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Website</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevents scrolling */
+            background: #f0f0f0; /* Just for demonstration */
+        }
+
+        #gymVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video covers whole screen */
+            position: fixed; /* Ensure video stays in place when overlay appears */
+        }
+
+        #cameraPrompt {
+            display: none;
+            position: fixed; /* Fixed position */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Align center */
+            width: 30%; /* Width of the prompt */
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            text-align: center;
+            border-radius: 10px; /* Rounded corners */
+            z-index: 10; /* Above all other elements */
+        }
+
+        #cameraPrompt button {
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 5px; /* Rounded corners for button */
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #muteButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ddd;
+            color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <video id="gymVideo" autoplay muted loop>
+        <source src="static/Project.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div id="muteButton" onclick="toggleMute()">Mute</div>
+    <div id="cameraPrompt">
+        <p>We require camera access for personalized training sessions.</p>
+        <button onclick="requestCameraAccess()">Allow Camera Access</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cameraPrompt = document.getElementById('cameraPrompt');
+
+            setTimeout(function() {
+                cameraPrompt.style.display = 'block';
+            }, 10000); // After 10 seconds, show the camera prompt
+        });
+
+        function requestCameraAccess() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    // Open new window with appropriate size
+                    const newWindow = window.open('', '', 'width=800,height=600');
+                    const doc = newWindow.document;
+                    doc.title = 'Camera Preview'; // Set the title of the new window
+                    const videoElement = doc.createElement('video'); // Create a new video element
+                    videoElement.autoplay = true;
+                    videoElement.style.width = '100%';
+                    videoElement.controls = true; // Add controls so the user can play/pause
+
+                    // Append the video element to the body of the new window
+                    doc.body.appendChild(videoElement);
+
+                    // Assign the stream to the video element
+                    videoElement.srcObject = stream;
+                    videoElement.play().catch(error => console.error('Error playing video stream:', error));
+                })
+                .catch(function(err) {
+                    console.error('Camera access denied', err);
+                });
+        }
+
+
+
+        function toggleMute() {
+            const video = document.getElementById('gymVideo');
+            video.muted = !video.muted;
+
+            const muteButton = document.getElementById('muteButton');
+            muteButton.textContent = video.muted ? 'Unmute' : 'Mute';
+        }
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Website</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        #gymVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: fixed;
+        }
+
+        #cameraPrompt, #uploadPrompt {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            text-align: center;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        #cameraPrompt button, #uploadPrompt button, #uploadForm input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #uploadForm {
+            display: none;
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #muteButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ddd;
+            color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <video id="gymVideo" autoplay muted loop>
+        <source src="static/Project.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div id="muteButton" onclick="toggleMute()">Mute</div>
+    <div id="uploadPrompt">
+        <p>Upload a video for personalized training sessions.</p>
+        <button onclick="showUploadForm()">Upload Video</button>
+    </div>
+    <form id="uploadForm" action="/upload_video" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="video/*">
+        <input type="submit" value="Upload">
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadPrompt = document.getElementById('uploadPrompt');
+
+            setTimeout(function() {
+                uploadPrompt.style.display = 'block';
+            }, 10000); // After 10 seconds, show the upload prompt
+        });
+
+        function showUploadForm() {
+            const uploadForm = document.getElementById('uploadForm');
+            uploadForm.style.display = 'block';
+        }
+
+        function toggleMute() {
+            const video = document.getElementById('gymVideo');
+            video.muted = !video.muted;
+
+            const muteButton = document.getElementById('muteButton');
+            muteButton.textContent = video.muted ? 'Unmute' : 'Mute';
+        }
+
+        function redirectToUploadPage() {
+            window.location.href = '/upload_page'; // Redirect to the new page
+        }
+    </script>
+</body>
+</html>
+

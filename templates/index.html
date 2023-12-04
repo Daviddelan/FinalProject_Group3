@@ -1,0 +1,35 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Exercise Detection</title>
+</head>
+<body>
+    <h1>Exercise Detection</h1>
+    <form action="/" method="post">
+        <label for="exercise">Choose an exercise:</label>
+        <select name="exercise" id="exercise">
+            <option value="curl_ups">Curl Ups</option>
+            <option value="push_ups">Push Ups</option>
+            <option value="jumping_jack">Jumping Jacks</option>
+            <option value="sit_ups">Sit Ups</option>
+            <option value="skipping">Skipping Rope</option>
+            <option value="barbell_biceps_curl">BarBell Biceps Curl</option>
+            <option value="bench_press">Bench Press</option>
+            <option value="deadlift">Deadlift</option>
+            <option value="pull_up">Pull Up</option>
+            <option value="squat">Squat</option>
+        </select>
+        <input type="submit" value="Start">
+    </form>
+    <img src="{{ url_for('video_feed') }}">
+
+    <!-- Storage Feature Section -->
+    <div style="margin-top: 20px;">
+        <p>Would you like to use the storage feature?</p>
+        <a href="/storage"><button>Yes, take me there</button></a>
+    </div>
+    
+</body>
+</html>
+
